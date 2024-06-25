@@ -1,25 +1,21 @@
 using ReactiveUI;
+using ReactiveUI.Maui;
+using CSharpMarkupPeopleInSpaceMaui.ViewModels;
+using LayoutOptions = Microsoft.Maui.Controls.LayoutOptions;
 
 namespace CSharpMarkupPeopleInSpaceMaui.Views;
 
-using Microsoft.Maui.Controls;
-using ReactiveUI.Maui;
-using ViewModels;
-
-
 public class MainPage : ReactiveContentPage<MainPageViewModel>
 {
-    public MainPage(IServiceProvider serviceProvider)
+    public MainPage(MainPageViewModel mainPageViewModel)
     {
         // Set the binding context
-        var mainPageViewModel = serviceProvider.GetRequiredService<MainPageViewModel>();
         BindingContext = mainPageViewModel;
         ViewModel = mainPageViewModel;
 
         // Set up the page title binding
         this.Bind(ViewModel, vm => vm.PageTitle, v => v.Title);
-
-        // Create the RefreshView
+        
         var refreshView = new RefreshView
         {
             Command = ViewModel.LoadCommand,
@@ -27,7 +23,6 @@ public class MainPage : ReactiveContentPage<MainPageViewModel>
         };
         refreshView.SetBinding(RefreshView.IsRefreshingProperty, "IsRefreshing");
         
-        // Create the ScrollView and CollectionView
         var scrollView = new ScrollView();
         var collectionView = new CollectionView
         {
@@ -36,15 +31,13 @@ public class MainPage : ReactiveContentPage<MainPageViewModel>
             Margin = new Thickness(10)
         };
         collectionView.SetBinding(ItemsView.ItemsSourceProperty, "Crew");
-
-        // Define the linear layout
+        
         var itemsLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical)
         {
             ItemSpacing = 10
         };
         collectionView.ItemsLayout = itemsLayout;
-
-        // Define the data template
+        
         collectionView.ItemTemplate = new DataTemplate(() =>
         {
             var frame = new Frame

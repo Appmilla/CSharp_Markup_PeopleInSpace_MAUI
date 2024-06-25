@@ -7,20 +7,17 @@ namespace CSharpMarkupPeopleInSpaceMaui.Views;
 
 public class DetailPage : ReactiveContentPage<DetailPageViewModel>
 {
-    public DetailPage(IServiceProvider serviceProvider)
+    public DetailPage(DetailPageViewModel detailPageViewModel)
     {
         // Set the binding context
-        var detailPageViewModel = serviceProvider.GetRequiredService<DetailPageViewModel>();
         BindingContext = detailPageViewModel;
         ViewModel = detailPageViewModel;
 
         // Set up the page title binding
         this.Bind(ViewModel, vm => vm.PageTitle, v => v.Title);
-
-        // Create the ScrollView
+        
         var scrollView = new ScrollView();
-
-        // Create the Grid
+        
         var grid = new Grid
         {
             Padding = new Thickness(0)
@@ -29,8 +26,7 @@ public class DetailPage : ReactiveContentPage<DetailPageViewModel>
         grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(70) });
         grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(3000) });
         grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
-
-        // Create and bind the Image
+        
         var image = new Image
         {
             HorizontalOptions = LayoutOptions.Center
@@ -39,8 +35,7 @@ public class DetailPage : ReactiveContentPage<DetailPageViewModel>
         grid.Children.Add(image);
         Grid.SetRow(image, 0);
         Grid.SetColumn(image, 0);
-
-        // Create and bind the Label
+        
         var nameLabel = new Label
         {
             Padding = new Thickness(10),
@@ -51,8 +46,7 @@ public class DetailPage : ReactiveContentPage<DetailPageViewModel>
         grid.Children.Add(nameLabel);
         Grid.SetRow(nameLabel, 1);
         Grid.SetColumn(nameLabel, 0);
-
-        // Create and bind the WebView
+        
         var webView = new WebView
         {
             VerticalOptions = LayoutOptions.Fill
