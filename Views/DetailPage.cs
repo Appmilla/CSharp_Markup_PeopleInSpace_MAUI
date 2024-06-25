@@ -9,8 +9,6 @@ namespace CSharpMarkupPeopleInSpaceMaui.Views;
 
 public class DetailPage : ReactiveContentPage<DetailPageViewModel>
 {
-    private readonly HotReloadHelper _hotReloadHelper;
-
     public DetailPage(DetailPageViewModel detailPageViewModel)
     {
         // Set the binding context
@@ -19,13 +17,12 @@ public class DetailPage : ReactiveContentPage<DetailPageViewModel>
         // Set up the page title binding
         this.Bind(ViewModel, vm => vm.PageTitle, v => v.Title);
 
-        _hotReloadHelper = new HotReloadHelper(this, Build);
-
-       
+        var hotReloadHelper = new HotReloadHelper(this, Build);
+        
         this.WhenActivated(disposables =>
         {
             // Any disposables here
-            Disposable.Create(() => _hotReloadHelper.Dispose()).DisposeWith(disposables);
+            Disposable.Create(() => hotReloadHelper.Dispose()).DisposeWith(disposables);
         });
     }
 

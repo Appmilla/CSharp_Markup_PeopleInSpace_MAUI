@@ -9,55 +9,23 @@ namespace CSharpMarkupPeopleInSpaceMaui.Views;
 
 public class MainPage : ReactiveContentPage<MainPageViewModel>
 {
-    private readonly HotReloadHelper _hotReloadHelper;
-    
     public MainPage(MainPageViewModel mainPageViewModel)
     {
         BindingContext = ViewModel = mainPageViewModel;
         this.Bind(ViewModel, vm => vm.PageTitle, v => v.Title);
 
-        _hotReloadHelper = new HotReloadHelper(this, Build);
+        var hotReloadHelper = new HotReloadHelper(this, Build);
         
         this.WhenActivated(disposables =>
         {
             // Any disposables here
-            Disposable.Create(() => _hotReloadHelper.Dispose()).DisposeWith(disposables);
+            Disposable.Create(() => hotReloadHelper.Dispose()).DisposeWith(disposables);
 
         });
-
     }
 
     void Build() => Content =
         CreateRefreshView();
-
-    /*
-    protected override void OnNavigatedTo(NavigatedToEventArgs args)
-    {
-        base.OnNavigatedTo(args);
-
-        Build();
-
-#if DEBUG
-        HotReloadService.UpdateApplicationEvent += ReloadUI;
-#endif
-    }
-
-    protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
-    {
-        base.OnNavigatedFrom(args);
-
-#if DEBUG
-        HotReloadService.UpdateApplicationEvent -= ReloadUI;
-#endif
-    }
-
-    private void ReloadUI(Type[] obj)
-    {
-        MainThread.BeginInvokeOnMainThread(() =>
-        {
-            Build();
-        });
-    }*/
 
     private RefreshView CreateRefreshView()
     {
