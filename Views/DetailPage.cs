@@ -1,12 +1,16 @@
+using CSharpMarkupPeopleInSpaceMaui.HotReload;
 using CSharpMarkupPeopleInSpaceMaui.ViewModels;
 using ReactiveUI;
 using ReactiveUI.Maui;
+using System.Reactive.Disposables;
 using LayoutOptions = Microsoft.Maui.Controls.LayoutOptions;
 
 namespace CSharpMarkupPeopleInSpaceMaui.Views;
 
 public class DetailPage : ReactiveContentPage<DetailPageViewModel>
 {
+    private readonly HotReloadHelper _hotReloadHelper;
+
     public DetailPage(DetailPageViewModel detailPageViewModel)
     {
         // Set the binding context
@@ -15,17 +19,18 @@ public class DetailPage : ReactiveContentPage<DetailPageViewModel>
         // Set up the page title binding
         this.Bind(ViewModel, vm => vm.PageTitle, v => v.Title);
 
-        // Create the main layout
-        var scrollView = CreateScrollView();
-        
-        // Set the content of the page
-        Content = scrollView;
+        _hotReloadHelper = new HotReloadHelper(this, Build);
 
+       
         this.WhenActivated(disposables =>
         {
             // Any disposables here
+            Disposable.Create(() => _hotReloadHelper.Dispose()).DisposeWith(disposables);
         });
     }
+
+    void Build() => Content =
+        CreateScrollView();
 
     private static ScrollView CreateScrollView()
     {

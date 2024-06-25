@@ -1,14 +1,14 @@
-﻿namespace CSharpMarkupPeopleInSpaceMaui;
+﻿using CSharpMarkupPeopleInSpaceMaui.Views;
+
+namespace CSharpMarkupPeopleInSpaceMaui;
 
 public partial class AppShell : Shell
 {
     public AppShell()
     {
         InitializeComponent();
-        
-        foreach (var route in Routes.RouteTypeMap)
-        {
-            Routing.RegisterRoute(route.Key, route.Value);
-        }
+
+        Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
+        Routing.RegisterRoute(nameof(DetailPage), typeof(DetailPage));
     }
 }

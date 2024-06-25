@@ -4,20 +4,19 @@ using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Markup;
 using CSharpMarkupPeopleInSpaceMaui.Alerts;
 using CSharpMarkupPeopleInSpaceMaui.Apis;
+using CSharpMarkupPeopleInSpaceMaui.HotReload;
 using CSharpMarkupPeopleInSpaceMaui.Navigation;
 using CSharpMarkupPeopleInSpaceMaui.Network;
 using CSharpMarkupPeopleInSpaceMaui.Reactive;
 using CSharpMarkupPeopleInSpaceMaui.Repositories;
 using CSharpMarkupPeopleInSpaceMaui.ViewModels;
 using CSharpMarkupPeopleInSpaceMaui.Views;
-using epj.RouteGenerator;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using Refit;
 
 namespace CSharpMarkupPeopleInSpaceMaui;
 
-[AutoRoutes("Page")]
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
@@ -26,7 +25,7 @@ public static class MauiProgram
 
         RxApp.DefaultExceptionHandler = new AnonymousObserver<Exception>(ex =>
         {
-            App.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+            App.Current?.MainPage?.DisplayAlert("Error", ex.Message, "OK");
         });
         
         var builder = MauiApp.CreateBuilder();
@@ -47,7 +46,8 @@ public static class MauiProgram
             options.SetShouldSuppressExceptionsInBehaviors(false);
             options.SetShouldSuppressExceptionsInAnimations(false);
         });
-        
+
+      
         builder.Services.AddSingleton<IBlobCache>(BlobCache.LocalMachine);
         
         builder.Services.AddTransient<MainPage>();
@@ -61,6 +61,7 @@ public static class MauiProgram
         builder.Services.AddRefitClient<ISpaceXApi>().ConfigureHttpClient(c => c.BaseAddress = new Uri("https://api.spacexdata.com/v4"));
         builder.Services.AddSingleton<IConnectivity>(provider => Connectivity.Current);
         builder.Services.AddSingleton<INetworkStatusObserver, NetworkStatusObserver>();
+
 
 #if DEBUG
         builder.Logging.AddDebug();

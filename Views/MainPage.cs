@@ -2,23 +2,62 @@ using ReactiveUI;
 using ReactiveUI.Maui;
 using CSharpMarkupPeopleInSpaceMaui.ViewModels;
 using LayoutOptions = Microsoft.Maui.Controls.LayoutOptions;
+using CSharpMarkupPeopleInSpaceMaui.HotReload;
+using System.Reactive.Disposables;
 
 namespace CSharpMarkupPeopleInSpaceMaui.Views;
 
 public class MainPage : ReactiveContentPage<MainPageViewModel>
 {
+    private readonly HotReloadHelper _hotReloadHelper;
+    
     public MainPage(MainPageViewModel mainPageViewModel)
     {
         BindingContext = ViewModel = mainPageViewModel;
         this.Bind(ViewModel, vm => vm.PageTitle, v => v.Title);
 
-        Content = CreateRefreshView();
-
+        _hotReloadHelper = new HotReloadHelper(this, Build);
+        
         this.WhenActivated(disposables =>
         {
             // Any disposables here
+            Disposable.Create(() => _hotReloadHelper.Dispose()).DisposeWith(disposables);
+
         });
+
     }
+
+    void Build() => Content =
+        CreateRefreshView();
+
+    /*
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+
+        Build();
+
+#if DEBUG
+        HotReloadService.UpdateApplicationEvent += ReloadUI;
+#endif
+    }
+
+    protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
+    {
+        base.OnNavigatedFrom(args);
+
+#if DEBUG
+        HotReloadService.UpdateApplicationEvent -= ReloadUI;
+#endif
+    }
+
+    private void ReloadUI(Type[] obj)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            Build();
+        });
+    }*/
 
     private RefreshView CreateRefreshView()
     {
@@ -63,7 +102,7 @@ public class MainPage : ReactiveContentPage<MainPageViewModel>
         {
             var frame = new Frame
             {
-                BackgroundColor = Colors.White,
+                BackgroundColor = Colors.Blue,
                 CornerRadius = 5,
                 Margin = new Thickness(5),
                 Padding = new Thickness(10),
@@ -143,7 +182,7 @@ public class MainPage : ReactiveContentPage<MainPageViewModel>
     {
         var agencyLabel = new Label
         {
-            FontSize = 16,
+            FontSize = 32,
             Margin = new Thickness(10, 0, 10, 10)
         };
         agencyLabel.SetBinding(Label.TextProperty, "Agency");

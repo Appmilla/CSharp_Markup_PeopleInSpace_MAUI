@@ -119,7 +119,7 @@ public class MainPageViewModel : ReactiveObject, IActivatableViewModel
             ["image"] = Uri.EscapeDataString(crewMember.Image.ToString()),
             ["wikipedia"] = Uri.EscapeDataString(crewMember.Wikipedia.ToString())
         };
-        var route = $"{Routes.DetailPage}?{string.Join("&", parameters.Select(p => $"{p.Key}={p.Value}"))}";
+        var route = $"DetailPage?{string.Join("&", parameters.Select(p => $"{p.Key}={p.Value}"))}";
         _navigationService.NavigateAsync(route);
     }
 }
