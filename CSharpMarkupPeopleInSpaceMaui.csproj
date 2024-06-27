@@ -76,7 +76,6 @@
       <Folder Include="Apis\" />
       <Folder Include="Extensions\" />
       <Folder Include="Functional\" />
-      <Folder Include="Models\" />
       <Folder Include="Navigation\" />
       <Folder Include="Network\" />
       <Folder Include="Reactive\" />

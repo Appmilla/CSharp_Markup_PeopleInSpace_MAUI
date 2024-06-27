@@ -70,7 +70,7 @@ public class MainPage : ReactiveContentPage<MainPageViewModel>
         {
             var frame = new Frame
             {
-                BackgroundColor = Colors.Blue,
+                BackgroundColor = Colors.White,
                 CornerRadius = 5,
                 Margin = new Thickness(5),
                 Padding = new Thickness(10),
@@ -150,7 +150,7 @@ public class MainPage : ReactiveContentPage<MainPageViewModel>
     {
         var agencyLabel = new Label
         {
-            FontSize = 32,
+            FontSize = 16,
             Margin = new Thickness(10, 0, 10, 10)
         };
         agencyLabel.SetBinding(Label.TextProperty, "Agency");
